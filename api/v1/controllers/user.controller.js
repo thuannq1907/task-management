@@ -171,3 +171,19 @@ module.exports.resetPassword = async (req, res) => {
     message: "Cập nhật mật khẩu thành công!"
   });
 };
+
+// [GET] /api/v1/users/detail/:id
+module.exports.detail = async (req, res) => {
+  const id = req.params.id;
+
+  const user = await User.findOne({
+    _id: id,
+    deleted: false
+  }).select("-password -token");
+
+  res.json({
+    code: 200,
+    message: "Thành công!",
+    info: user
+  });
+};
