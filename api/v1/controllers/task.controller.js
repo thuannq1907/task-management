@@ -4,7 +4,16 @@ const paginationHelper = require("../../../helpers/pagination.helper");
 
 // [GET] /api/v1/tasks/
 module.exports.index = async (req, res) => {
+  const userId = res.locals.user.id;
+
   const find = {
+    // lấy ra những task do user tạo ra hoặc những task user đó đc thêm vào
+    $or: [
+      // task user tạo
+      { createdBy: userId },
+      // task user đc thêm vào bởi ng khác
+      { listUser: userId }
+    ],
     deleted: false
   };
 
@@ -129,6 +138,7 @@ module.exports.changeMulti = async (req, res) => {
 // [POST] /api/v1/tasks/create
 module.exports.create = async (req, res) => {
   try {
+    req.body.createdBy = res.locals.user.id;
     const task = new Task(req.body);
     const data = await task.save();
 

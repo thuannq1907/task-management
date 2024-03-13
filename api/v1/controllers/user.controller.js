@@ -171,3 +171,26 @@ module.exports.resetPassword = async (req, res) => {
     message: "Cập nhật mật khẩu thành công!"
   });
 };
+
+// [GET] /api/v1/users/detail
+module.exports.detail = async (req, res) => {
+  res.json({
+    code: 200,
+    message: "Thành công!",
+    info: res.locals.user
+  });
+};
+
+// [POST] /api/v1/users/list
+module.exports.list = async (req, res) => {
+  // 1 list danh sách tất cả những ng đc chọn để add vào task
+  const users = await User.find({
+    deleted: false
+  }).select("id fullName email");
+
+  res.json({
+    code: 200,
+    message: "Thành công!",
+    users: users
+  });
+};
