@@ -180,3 +180,17 @@ module.exports.detail = async (req, res) => {
     info: res.locals.user
   });
 };
+
+// [POST] /api/v1/users/list
+module.exports.list = async (req, res) => {
+  // 1 list danh sách tất cả những ng đc chọn để add vào task
+  const users = await User.find({
+    deleted: false
+  }).select("id fullName email");
+
+  res.json({
+    code: 200,
+    message: "Thành công!",
+    users: users
+  });
+};
